@@ -1,0 +1,20 @@
+{
+    "*": {
+        "native": false,
+        "args": ["-target", "wasm32-unknown-emscripten", "-D__wasi__", "-fPIC"]
+    },
+    "dllbase_stubs.so": {
+        "output": "bin/dllbase_stubs.wasm",
+        "args": [
+            "-nostdlib", "-target", "wasm32-unknown-emscripten", "-D__wasi__", "-fPIC",
+            "-Wl,--shared", "-Wl,-allow-undefined", "-Wl,--import-table", "-Wl,--export-all"],
+        "noargs": ["re:^-Wl", "re:^-shared"]
+    },
+    "dllbase_internalhash_types_stubs.so": {
+        "output": "bin/dllbase_internalhash_types_stubs.wasm",
+        "args": [
+            "-nostdlib", "-target", "wasm32-unknown-emscripten", "-D__wasi__", "-fPIC",
+            "-Wl,--shared", "-Wl,-allow-undefined", "-Wl,--import-table", "-Wl,--export-all"],
+        "noargs": ["re:^-Wl", "re:^-shared"]
+    }
+}

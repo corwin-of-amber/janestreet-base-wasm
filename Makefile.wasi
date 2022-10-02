@@ -1,0 +1,19 @@
+OCAML_STDLIB = $(shell ocamlfind printconf stdlib)
+
+# LDFLAGS are for macOS :/
+CCFLAGS = -O3 -I${OCAML_STDLIB}
+LDFLAGS= -shared -Wl,-flat_namespace,-undefined,suppress
+
+BASE_SRC = $(addprefix src/, am_testing.c exn_stubs.c hash_stubs.c int_math_stubs.c)
+HASH_TYPES_SRC = hash_types/src/internalhash_stubs.c
+
+all: bin/dllbase_stubs.wasm bin/dllbase_internalhash_types_stubs.wasm
+
+bin/dllbase_stubs.wasm: bin $(BASE_SRC)
+	wasi-kit clang ${CCFLAGS} ${LDFLAGS} ${BASE_SRC} -o dllbase_stubs.so
+
+bin/dllbase_internalhash_types_stubs.wasm: bin $(HASH_TYPES_SRC)
+	wasi-kit clang ${CCFLAGS} ${LDFLAGS} ${HASH_TYPES_SRC} -o dllbase_internalhash_types_stubs.so
+
+bin/:
+	mkdir -p bin
